@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-3-232-163-23.compute-1.amazonaws.com:5432/d2j23rpmrav8cm
+    username: kanaqiyzrlujvy
+    password: e73a66359690077bc701b1d407f42d2cf5b4fad6dc66d12148b892167b3209ed
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: true
+
+
+  flyway:
+    baselineOnMigrate: true
