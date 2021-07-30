@@ -1,5 +1,6 @@
 package com.springbootbroilerstarter.demo.utils;
 
+import com.springbootbroilerstarter.demo.exceptions.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.Date;
@@ -45,6 +46,25 @@ public class Helpers {
         }
         test = test.substring(0, test.length() - 1);
         return test;
+    }
+
+
+    public static void handleException(Exception e){
+        String[] classArr = e.getClass().getCanonicalName().split("\\.");
+        String className = classArr[classArr.length -1];
+        switch (className){
+            case "BadRequestException":
+                throw new BadRequestException(e.getMessage());
+            case "ResourceNotFoundException":
+                throw new ResourceNotFoundException(e.getMessage());
+            case "UnauthorizedException":
+                throw new UnauthorizedException(e.getMessage());
+            case "Forbidden":
+                throw new Forbidden(e.getMessage());
+            default:
+                throw new UnexpectedFailure(e.getMessage());
+        }
+
     }
 
 }
