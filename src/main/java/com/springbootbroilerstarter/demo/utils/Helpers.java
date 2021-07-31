@@ -1,13 +1,24 @@
 package com.springbootbroilerstarter.demo.utils;
 
 import com.springbootbroilerstarter.demo.exceptions.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
+@Service
 public class Helpers {
+
+    private static PasswordEncoder encoder;
+
+    @Autowired
+    private static BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public static String getRandomNumberString() {
         // It will generate 6 digit random Number.
@@ -64,7 +75,11 @@ public class Helpers {
             default:
                 throw new UnexpectedFailure(e.getMessage());
         }
+    }
 
+    public static String hashPassword(String password){
+        System.out.println(encoder);
+        return encoder.encode(password);
     }
 
 }

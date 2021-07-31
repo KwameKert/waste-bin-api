@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setStatus(1);
             Role userRole = roleRepository.findByRole(userDTO.getRole());
-            user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+            user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
             return Helpers.responseAPI(userRepository.save(user), "user saved successfully", HttpStatus.OK);
         }catch (Exception e){

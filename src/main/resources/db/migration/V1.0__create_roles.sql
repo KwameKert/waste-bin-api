@@ -12,5 +12,5 @@ alter table user_role add constraint FKnnjwin2r8oajs3wmc8sbn0672 foreign key (us
 INSERT INTO  roles  (role_id, role) VALUES (1, 'ADMIN'),(2, 'EDITOR');
 INSERT INTO app_users(id, email, first_name, last_name, password, status, username)
 values ( 2,'kwamekert@gmail.com','kwame','asante',
-        '$2a$10$FEbdF4zJaUgWj6/Bd3WKR.8NMlL1QBU2vgpABrsrS8V1N/cbi5NqC',1,'kwamekert');
+        '$2a$10$dD.CUVm1H/LdDG0KHDRb5OW/0MOQAEtaREhWFrwbX.VAu5lSEvaY2',1,'kwamekert');
 INSERT INTO  user_role(user_id, role_id) VALUES ( 2,1 );
