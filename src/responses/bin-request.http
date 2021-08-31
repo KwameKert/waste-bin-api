@@ -4,9 +4,10 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrd2FtZWtlcnQiLCJpYXQiOjE2M
 
 
 {
+  "id": 2,
   "latitude": 5.234323,
   "longitude": 6.234323,
-  "contactName": "kwamekert",
+  "contactName": "Dennis Asante",
   "contactPhone": "0244996545",
   "contactAddress": "Mamprobi"
 }

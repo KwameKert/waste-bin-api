@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-3-232-163-23.compute-1.amazonaws.com:5432/d2j23rpmrav8cm
-    username: kanaqiyzrlujvy
-    password: e73a66359690077bc701b1d407f42d2cf5b4fad6dc66d12148b892167b3209ed
+    url: jdbc:postgresql://localhost:5432/wasteDB
+    #url: jdbc:postgresql://localhost:5432/credentialTest
+    username: postgres
+    password: kwamepass
 
   jpa:
     properties:
@@ -12,5 +13,15 @@ spring:
     generate-ddl: true
 
 
+
   flyway:
-    baselineOnMigrate: true
+    baselineOnMigrate: false
+    user: postgres
+    password: kwamepass
+    url: jdbc:postgresql://localhost:5432/wasteDB
+    table: flyway_schema_history
+    enabled: false
+
+jwt:
+  secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
+  expiration: 29400
