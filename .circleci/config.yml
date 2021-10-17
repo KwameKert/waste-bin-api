@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  deploy-job-staging:
+    docker:
+      - image: circleci/openjdk:11.0.1-jdk
+    working_directory: ~/repo
+    environment:
+      MAVEN_OPTS: -Xmx400m
+        -XX:+UseSerialGC
+        -Xss512k
+        -XX:MaxRAM=72m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run: mvn clean package
+      - run: scp -oStrictHostKeyChecking=no -r /home/circleci/repo/target/wasteBin-service-0.0.1-SNAPSHOT.jar agapp@165.227.192.124:/home/agapp/workspace/wasteBin-service
+      - run: ssh -oStrictHostKeyChecking=no -v agapp@165.227.192.124 'sudo systemctl restart wasteBin.service'
+
+
+
+
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy-job-staging:
+          filters:
+            branches:
+              only: master
