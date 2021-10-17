@@ -1,17 +1,22 @@
 package com.springbootbroilerstarter.demo.utils;
 
+import com.springbootbroilerstarter.demo.dtos.ChannelFeed;
+import com.springbootbroilerstarter.demo.dtos.PaystackRequest;
+import com.springbootbroilerstarter.demo.dtos.Response;
 import com.springbootbroilerstarter.demo.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class Helpers {
 
@@ -81,5 +86,37 @@ public class Helpers {
         System.out.println(encoder);
         return encoder.encode(password);
     }
+
+    public static long generateInvoiceNumber(){
+        int min = 5000;
+        int max = 1000000;
+
+        int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
+        return random_int;
+    }
+
+
+    public static String getCheckoutUrl(float amount,String email) throws JsonProcessingException {
+         RestTemplate restTemplate = new RestTemplate();
+        PaystackRequest paystackRequest = new PaystackRequest(amount, email);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer sk_test_0f1d50d1f476e5cd80b1f16563fbab39282cd1f5");
+
+        String requestEntity = getBody(paystackRequest);
+        HttpEntity<String> entity = new HttpEntity<String>(requestEntity,headers);
+
+        String paystackUrl = "https://api.paystack.co/transaction/initialize";
+        ResponseEntity<Response> response = restTemplate.postForEntity(paystackUrl, entity, Response.class);
+
+        return response.getBody().data.authorization_url;
+
+    }
+
+    private static String getBody(final PaystackRequest paystackRequest) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(paystackRequest);
+    }
+
 
 }

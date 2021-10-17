@@ -8,11 +8,14 @@ import java.util.HashMap;
 @Service
 public interface BinService {
 
-    public HashMap<String, Object> create(Bin bin);
-    public HashMap<String, Object> update(Bin bin);
-    public HashMap<String, Object> fetchAll();
-    public HashMap<String, Object> get(Long id);
-    public HashMap<String, Object> delete(Long id);
-    public void updateBinSensor(int status);
+     HashMap<String, Object> create(Bin bin);
+     HashMap<String, Object> update(Bin bin);
+    HashMap<String, Object> emptyBin(Long id);
+     HashMap<String, Object> fetchAll();
+     HashMap<String, Object> get(Long id);
+     HashMap<String, Object> delete(Long id);
+     HashMap<String, Object> invoiceList();
+     HashMap<String, Object> getInvoiceCheckoutUrl(Long id);
+     void updateBinSensor(int status);
 
 }

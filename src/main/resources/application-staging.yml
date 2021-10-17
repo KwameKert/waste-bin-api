@@ -1,9 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/wasteDB
-    #url: jdbc:postgresql://localhost:5432/credentialTest
+    url: jdbc:postgresql://165.227.192.124:5432/wasteDB
     username: postgres
-    password: kwamepass
+    password: Asante=0198
 
   jpa:
     properties:

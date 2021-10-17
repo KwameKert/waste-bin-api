@@ -18,7 +18,7 @@ public class BinScheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(BinScheduler.class);
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 30000000)
     public void checkBinFull(){
         RestTemplate restTemplate = new RestTemplate();
         String thinkSpeakUrl
