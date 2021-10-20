@@ -26,7 +26,7 @@ public class BinController {
     }
 
 
-    @PostMapping("/paystack/callback")
+    @GetMapping("/paystack/callback")
     public ResponseEntity<?> addBin(@RequestParam String reference) {
         return new ResponseEntity<>(binService.callbackResponse(reference), HttpStatus.OK);
     }
