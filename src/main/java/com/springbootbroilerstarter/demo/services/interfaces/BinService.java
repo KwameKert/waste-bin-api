@@ -1,6 +1,7 @@
 package com.springbootbroilerstarter.demo.services.interfaces;
 
 import com.springbootbroilerstarter.demo.domains.Bin;
+import com.springbootbroilerstarter.demo.dtos.PaystackCallbackResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public interface BinService {
      HashMap<String, Object> get(Long id);
      HashMap<String, Object> delete(Long id);
      HashMap<String, Object> invoiceList();
+     HashMap<String, Object> callbackResponse(String reference);
      HashMap<String, Object> getInvoiceCheckoutUrl(Long id);
      void updateBinSensor(int status);
 

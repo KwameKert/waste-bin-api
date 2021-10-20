@@ -33,6 +33,10 @@ public class Bin {
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
+    @OneToMany(mappedBy = "bin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Invoice> invoiceList;
+
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;

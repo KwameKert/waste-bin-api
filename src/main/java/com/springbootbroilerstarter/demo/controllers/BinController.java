@@ -2,6 +2,7 @@ package com.springbootbroilerstarter.demo.controllers;
 
 
 import com.springbootbroilerstarter.demo.domains.Bin;
+import com.springbootbroilerstarter.demo.dtos.PaystackCallbackResponse;
 import com.springbootbroilerstarter.demo.services.interfaces.BinService;
 import com.springbootbroilerstarter.demo.services.interfaces.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class BinController {
     @PostMapping
     public ResponseEntity<?> addBin(@RequestBody Bin bin) {
         return new ResponseEntity<>(binService.create(bin), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/paystack/callback")
+    public ResponseEntity<?> addBin(@RequestParam String reference) {
+        return new ResponseEntity<>(binService.callbackResponse(reference), HttpStatus.OK);
     }
 
     @PutMapping

@@ -1,8 +1,6 @@
 package com.springbootbroilerstarter.demo.utils;
 
-import com.springbootbroilerstarter.demo.dtos.ChannelFeed;
-import com.springbootbroilerstarter.demo.dtos.PaystackRequest;
-import com.springbootbroilerstarter.demo.dtos.Response;
+import com.springbootbroilerstarter.demo.dtos.*;
 import com.springbootbroilerstarter.demo.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -90,15 +88,14 @@ public class Helpers {
     public static long generateInvoiceNumber(){
         int min = 5000;
         int max = 1000000;
-
         int random_int = (int)Math.floor(Math.random()*(max-min+1)+min);
         return random_int;
     }
 
 
-    public static String getCheckoutUrl(float amount,String email) throws JsonProcessingException {
+    public static String getCheckoutUrl(float amount, String email, MetaData metaData) throws JsonProcessingException {
          RestTemplate restTemplate = new RestTemplate();
-        PaystackRequest paystackRequest = new PaystackRequest(amount, email);
+        PaystackRequest paystackRequest = new PaystackRequest(amount, email, metaData);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -112,6 +109,18 @@ public class Helpers {
 
         return response.getBody().data.authorization_url;
 
+    }
+
+
+    public static PaystackCallbackResponse verifyPayment(String reference){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer sk_test_0f1d50d1f476e5cd80b1f16563fbab39282cd1f5");
+
+        String paystackUrl = "https://api.paystack.co/transaction/verify/"+reference;
+        ResponseEntity<PaystackCallbackResponse> response = restTemplate.getForEntity(paystackUrl, PaystackCallbackResponse.class);
+        return response.getBody();
     }
 
     private static String getBody(final PaystackRequest paystackRequest) throws JsonProcessingException {

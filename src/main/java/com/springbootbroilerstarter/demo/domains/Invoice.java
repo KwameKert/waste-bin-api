@@ -26,6 +26,11 @@ public class Invoice {
 
     private Long customerId;
 
+
+    @ManyToOne(fetch=FetchType.EAGER, optional = false)
+    @JoinColumn(name="bin_id", nullable = false)
+    private Bin bin;
+
     @Column(columnDefinition = "int default '0'")
     private int status ;
 

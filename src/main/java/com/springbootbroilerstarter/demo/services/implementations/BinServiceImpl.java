@@ -3,6 +3,8 @@ package com.springbootbroilerstarter.demo.services.implementations;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.springbootbroilerstarter.demo.domains.Bin;
 import com.springbootbroilerstarter.demo.domains.Invoice;
+import com.springbootbroilerstarter.demo.dtos.MetaData;
+import com.springbootbroilerstarter.demo.dtos.PaystackCallbackResponse;
 import com.springbootbroilerstarter.demo.repositories.BinRepository;
 import com.springbootbroilerstarter.demo.repositories.InvoiceRepository;
 import com.springbootbroilerstarter.demo.services.interfaces.BinService;
@@ -82,10 +84,13 @@ public class BinServiceImpl implements BinService {
 
 
     private void recordInvoice(Bin bin){
+        System.out.println(Helpers.generateInvoiceNumber());
+        System.out.println(bin);
         Invoice invoice = new Invoice();
         invoice.setAmount(5.5f);
         invoice.setDriverId(2l);
         invoice.setCustomerId(3l);
+        invoice.setBin(bin);
         invoice.setInvoiceId(Helpers.generateInvoiceNumber());
         this.invoiceRepository.save(invoice);
     }
@@ -134,6 +139,26 @@ public class BinServiceImpl implements BinService {
     }
 
     @Override
+    public HashMap<String, Object> callbackResponse(String reference) {
+        try{
+            System.out.println(reference);
+            PaystackCallbackResponse response = Helpers.verifyPayment(reference);
+            if(response.data.status.equals("success")){
+                Optional<Invoice> optionalInvoice = this.invoiceRepository.findByInvoiceId(response.data.metadata.getInvoiceId());
+                Invoice invoice = optionalInvoice.get();
+                invoice.setStatus(1);
+                this.invoiceRepository.save(invoice);
+                System.out.println("Invoice updated");
+            }
+            System.out.println(response);
+            return Helpers.responseAPI(reference,"Data fetched",HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Helpers.responseAPI(null, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @Override
     public HashMap<String, Object> getInvoiceCheckoutUrl(Long id) {
         try{
             Optional<Invoice> invoiceOptional = this.invoiceRepository.findById(id);
@@ -141,7 +166,8 @@ public class BinServiceImpl implements BinService {
                  return Helpers.responseAPI(null, "No Invoice found", HttpStatus.BAD_REQUEST);
 
             Integer amount = Math.round(invoiceOptional.get().getAmount() * 100);
-            String url = Helpers.getCheckoutUrl(amount, "test@gmail.com");
+            MetaData metaData = new MetaData(invoiceOptional.get().getInvoiceId());
+            String url = Helpers.getCheckoutUrl(amount, "test@gmail.com", metaData);
             return Helpers.responseAPI(url, "Checkout url found", HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
