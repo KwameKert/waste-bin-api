@@ -144,7 +144,7 @@ public class BinServiceImpl implements BinService {
             System.out.println(reference);
             PaystackCallbackResponse response = Helpers.verifyPayment(reference);
             if(response.data.status.equals("success")){
-                Optional<Invoice> optionalInvoice = this.invoiceRepository.findByInvoiceId(response.data.metadata.getInvoiceId());
+                Optional<Invoice> optionalInvoice = this.invoiceRepository.findByInvoiceId(response.data.metadata);
                 Invoice invoice = optionalInvoice.get();
                 invoice.setStatus(1);
                 this.invoiceRepository.save(invoice);
@@ -167,7 +167,7 @@ public class BinServiceImpl implements BinService {
 
             Integer amount = Math.round(invoiceOptional.get().getAmount() * 100);
             MetaData metaData = new MetaData(invoiceOptional.get().getInvoiceId());
-            String url = Helpers.getCheckoutUrl(amount, "test@gmail.com", metaData);
+            String url = Helpers.getCheckoutUrl(amount, "test@gmail.com", invoiceOptional.get().getInvoiceId());
             return Helpers.responseAPI(url, "Checkout url found", HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

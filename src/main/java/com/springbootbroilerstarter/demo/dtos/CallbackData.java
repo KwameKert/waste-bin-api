@@ -19,7 +19,7 @@ public class CallbackData{
     public String status;
     public String reference;
     public String domain;
-    public MetaData metadata;
+    public Long metadata;
     public String gateway_response;
     public Object message;
     public String channel;

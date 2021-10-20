@@ -93,7 +93,7 @@ public class Helpers {
     }
 
 
-    public static String getCheckoutUrl(float amount, String email, MetaData metaData) throws JsonProcessingException {
+    public static String getCheckoutUrl(float amount, String email, Long metaData) throws JsonProcessingException {
          RestTemplate restTemplate = new RestTemplate();
         PaystackRequest paystackRequest = new PaystackRequest(amount, email, metaData);
 
@@ -105,6 +105,7 @@ public class Helpers {
         HttpEntity<String> entity = new HttpEntity<String>(requestEntity,headers);
 
         String paystackUrl = "https://api.paystack.co/transaction/initialize";
+
         ResponseEntity<Response> response = restTemplate.postForEntity(paystackUrl, entity, Response.class);
 
         return response.getBody().data.authorization_url;
@@ -119,7 +120,9 @@ public class Helpers {
         headers.set("Authorization", "Bearer sk_test_0f1d50d1f476e5cd80b1f16563fbab39282cd1f5");
 
         String paystackUrl = "https://api.paystack.co/transaction/verify/"+reference;
-        ResponseEntity<PaystackCallbackResponse> response = restTemplate.getForEntity(paystackUrl, PaystackCallbackResponse.class);
+        ResponseEntity<PaystackCallbackResponse> response = restTemplate.exchange(
+                paystackUrl, HttpMethod.GET, new HttpEntity<Object>(headers),
+                PaystackCallbackResponse.class);;
         return response.getBody();
     }
 
