@@ -18,6 +18,6 @@ public interface BinService {
      HashMap<String, Object> invoiceList();
      HashMap<String, Object> callbackResponse(String reference);
      HashMap<String, Object> getInvoiceCheckoutUrl(Long id);
-     void updateBinSensor(int status);
+     void updateBinSensor(int status,Long id);
 
 }

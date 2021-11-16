@@ -110,8 +110,8 @@ public class BinServiceImpl implements BinService {
         }
     }
 
-    public void updateBinSensor(int status){
-        Bin bin = this.binRepository.findById(1L).get();
+    public void updateBinSensor(int status, Long id){
+        Bin bin = this.binRepository.findById(id).get();
         bin.setIsFull(status);
         this.binRepository.save(bin);
     }

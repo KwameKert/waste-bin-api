@@ -22,11 +22,13 @@ public class BinScheduler {
     public void checkBinFull(){
         RestTemplate restTemplate = new RestTemplate();
         String thinkSpeakUrl
-                = "https://api.thingspeak.com/channels/1476474/feeds.json?results=1";
+                = "https://api.thingspeak.com/channels/1545848/feeds.json?results=1";
         ResponseEntity<ChannelFeed> response
                 = restTemplate.getForEntity(thinkSpeakUrl , ChannelFeed.class);
-        int status = Integer.parseInt(response.getBody().feeds.get(0).field1) <= 33 ? 1: 0;
-        this.binService.updateBinSensor(status);
+        int binOneStatus = Integer.parseInt(response.getBody().feeds.get(0).field1) <= 33 ? 1: 0;
+        int binOTwoStatus = Integer.parseInt(response.getBody().feeds.get(0).field2) <= 33 ? 1: 0;
+        this.binService.updateBinSensor(binOneStatus, 1L);
+        this.binService.updateBinSensor(binOTwoStatus, 2L);
         LOG.info("Fetching data from thinkspeak ---> "+response.getBody().channel.name);
     }
 

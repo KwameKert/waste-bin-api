@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
         }catch (Exception e){
             e.printStackTrace();
             Helpers.handleException(e);
-            return Helpers.responseAPI(null, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+           return Helpers.responseAPI(null, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
 
     }
